@@ -29,8 +29,8 @@ export class UsersController {
 
   @Get(':id')
   async findOne(
-    @Param('id')
-    id: MongoIdDto,
+    @Param('id', ParseMongoIdPipe)
+    id: string,
   ): Promise<User> {
     return this.userService.findUserById(id);
   }
@@ -45,7 +45,7 @@ export class UsersController {
 
   @Patch(':id')
   async update(
-    @Param('id') id: MongoIdDto,
+    @Param('id', ParseMongoIdPipe) id: string,
     @Body()
     updateUserDto: UpdateUserDto,
   ): Promise<User> {

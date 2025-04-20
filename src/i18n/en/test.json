@@ -1,0 +1,5 @@
+{
+  "HELLO": "Hello",
+  "NOT_FOUND": "Not found user for this ID {id}",
+  "ALREADY_EXISTS": "This {duplicatedField} already exists"
+}

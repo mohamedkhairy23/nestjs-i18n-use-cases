@@ -1,0 +1,5 @@
+{
+  "HELLO": "مرحبا",
+  "NOT_FOUND": "لا يوجد مستخدم لهذا الرقم التعريفي {id}",
+  "ALREADY_EXISTS": "هذا الحقل موجود بالفعل {duplicatedField}"
+}
