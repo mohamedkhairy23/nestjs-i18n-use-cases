@@ -1,14 +1,48 @@
 version: '3.8'
 
 services:
+  nestjs-app:
+    container_name: nestjs-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3000
+    env_file:
+      - .env # Load environment variables from the .env file
+    depends_on:
+      - mongodb
+      - adminer
+
   mongodb:
     image: mongo:7.0.2
-    container_name: nest-i18n-mongodb
+    container_name: nestjs-i18n-use-cases
     restart: always
     ports:
       - '27017:27017'
     volumes:
       - mongodb_data_container:/data/db
 
+  adminer:
+    image: adminer
+    container_name: nestjs-database-connection-adminer
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: ep-restless-rice-a5ilnoib-pooler.us-east-2.aws.neon.tech
+    ports:
+      - 8080:8080
+
 volumes:
   mongodb_data_container:
+###################################################################################################################################
+# docker-compose up -d --build ==> To build docker image
+# docker ps -a ==> To display images
+# docker-compose down ==> This command stops and removes all containers, networks, and volumes defined in the compose file
+# docker-compose down --rmi all ==> If you also want to remove named volumes (like your DB data)
+# docker system prune -a ==> Will Remove (All stopped containers - All unused networks - All dangling images (images not used by any container) - All unused images (even if they're not dangling) - All build cache - All unused volumes (only if you add --volumes))
+
+# If you want to rebuild everything from scratch (e.g., changes in dependencies or Dockerfile):
+
+# docker-compose down -v
+# docker-compose build --no-cache
+# docker-compose up -d

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { Model } from 'mongoose';
@@ -24,8 +29,16 @@ export class UserService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const createUser = await this.userModel.create(createUserDto);
-    return createUser;
+    try {
+      const createUser = await this.userModel.create(createUserDto);
+      return createUser;
+    } catch (error) {
+      if (error.code === 11000) {
+        const duplicatedField = Object.keys(error.keyValue)[0];
+        throw new ConflictException(`${duplicatedField} already exists`);
+      }
+      throw new InternalServerErrorException('Failed to create user');
+    }
   }
 
   async updateUser(
