@@ -10,6 +10,8 @@ import {
   HeaderResolver,
   CookieResolver,
 } from 'nestjs-i18n';
+import { CustomI18nService } from './shared/custom-i18n.service';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -32,7 +34,8 @@ import {
     }),
     UsersModule,
     MongoModule,
+    SharedModule,
   ],
-  providers: [],
+  providers: [CustomI18nService],
 })
 export class AppModule {}

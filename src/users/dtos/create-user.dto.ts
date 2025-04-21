@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Length } from 'class-validator';
+import { IsEmail, IsObject, IsString, Length } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -8,8 +8,8 @@ export class CreateUserDto {
   @IsEmail({}, { message: 'incorrect email' })
   readonly email: string;
 
-  @IsString()
-  readonly country: string;
+  @IsObject()
+  readonly country: object;
 
   @IsString()
   readonly password: string;

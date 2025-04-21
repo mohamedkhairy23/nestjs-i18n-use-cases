@@ -9,13 +9,13 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
-import { I18nContext, I18nService } from 'nestjs-i18n';
+import { CustomI18nService } from 'src/shared/custom-i18n.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    private readonly i18n: I18nService,
+    private readonly i18n: CustomI18nService,
   ) {}
 
   async findUsers(): Promise<User[]> {
@@ -27,8 +27,7 @@ export class UserService {
     const user = await this.userModel.findById(id);
     if (!user) {
       throw new NotFoundException(
-        this.i18n.t('test.NOT_FOUND', {
-          lang: I18nContext.current().lang,
+        this.i18n.translate('test.NOT_FOUND', {
           args: { id },
         }),
       );
@@ -45,8 +44,7 @@ export class UserService {
         const duplicatedField = Object.keys(error.keyValue)[0];
         // throw new ConflictException(`${duplicatedField} already exists`);
         throw new ConflictException(
-          this.i18n.t('test.ALREADY_EXISTS', {
-            lang: I18nContext.current().lang,
+          this.i18n.translate('test.ALREADY_EXISTS', {
             args: { duplicatedField },
           }),
         );
@@ -64,22 +62,30 @@ export class UserService {
       );
 
       if (!updatedUser) {
-        throw new NotFoundException(`User with ID "${id}" not found`);
+        const msg = this.i18n.translate('test.NOT_FOUND', {
+          args: { id },
+        });
+        throw new NotFoundException(msg);
       }
 
       return updatedUser;
     } catch (error) {
+      if (error.name === 'CastError') {
+        const msg = this.i18n.translate('test.NOT_FOUND', {
+          args: { id },
+        });
+        throw new NotFoundException(msg);
+      }
       if (error.code === 11000) {
         const duplicatedField = Object.keys(error.keyValue)[0];
-        // throw new ConflictException(`${duplicatedField} already exists`);
         throw new ConflictException(
-          this.i18n.t('test.ALREADY_EXISTS', {
-            lang: I18nContext.current().lang,
+          this.i18n.translate('test.ALREADY_EXISTS', {
             args: { duplicatedField },
           }),
         );
       }
-      throw new InternalServerErrorException('Failed to create user');
+      const fallbackMsg = this.i18n.translate('test.UNEXPECTED_ERROR');
+      throw new InternalServerErrorException(fallbackMsg);
     }
   }
 
@@ -88,8 +94,7 @@ export class UserService {
 
     if (!user) {
       throw new NotFoundException(
-        this.i18n.t('test.NOT_FOUND', {
-          lang: I18nContext.current().lang,
+        this.i18n.translate('test.NOT_FOUND', {
           args: { id },
         }),
       );

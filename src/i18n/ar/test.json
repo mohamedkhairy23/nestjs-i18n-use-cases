@@ -1,5 +1,6 @@
 {
   "HELLO": "مرحبا",
   "NOT_FOUND": "لا يوجد مستخدم لهذا الرقم التعريفي {id}",
-  "ALREADY_EXISTS": "هذا الحقل موجود بالفعل {duplicatedField}"
+  "ALREADY_EXISTS": "هذا الحقل موجود بالفعل {duplicatedField}",
+  "UNEXPECTED_ERROR": "فشل تحديث بيانات المستخدم"
 }
