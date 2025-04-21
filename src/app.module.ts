@@ -17,7 +17,7 @@ import { SharedModule } from './shared/shared.module';
   imports: [
     ConfigModule.forRoot(),
     I18nModule.forRoot({
-      fallbackLanguage: 'en', // default lang
+      fallbackLanguage: 'ar', // default lang
       loaderOptions: {
         // loading translation files
         path: path.join(__dirname, '/i18n/'),

@@ -1,0 +1,4 @@
+{
+  "EMAIL_NOT_FORMATTED": "Email is not formatted correctly",
+  "USER_STRING_LENGTH": "Username be at least 3 characters and less than or equal 20 characters"
+}
