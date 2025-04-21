@@ -10,6 +10,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { CustomI18nService } from 'src/shared/custom-i18n.service';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,11 @@ export class UserService {
 
   async findUsers(): Promise<User[]> {
     const users = await this.userModel.find();
-    return users;
+    const localizedUsers = this.userModel.schema.methods.toJSONLocalizedOnly(
+      users,
+      I18nContext.current().lang,
+    );
+    return localizedUsers;
   }
 
   async findUserById(id: string): Promise<User> {
@@ -42,7 +47,6 @@ export class UserService {
     } catch (error) {
       if (error.code === 11000) {
         const duplicatedField = Object.keys(error.keyValue)[0];
-        // throw new ConflictException(`${duplicatedField} already exists`);
         throw new ConflictException(
           this.i18n.translate('test.ALREADY_EXISTS', {
             args: { duplicatedField },

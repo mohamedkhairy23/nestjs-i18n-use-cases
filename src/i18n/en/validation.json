@@ -1,4 +1,14 @@
 {
   "EMAIL_NOT_FORMATTED": "Email is not formatted correctly",
-  "USER_STRING_LENGTH": "Username be at least 3 characters and less than or equal 20 characters"
+  "USER_STRING_LENGTH": "Username be at least 3 characters and less than or equal 20 characters",
+  "localizedField": {
+    "en": {
+      "REQUIRED": "{field} in English field is required",
+      "STRING": "{field} in English field must be a string"
+    },
+    "ar": {
+      "REQUIRED": "{field} in Arabic field is required",
+      "STRING": "{field} in Arabic field must be a string"
+    }
+  }
 }
